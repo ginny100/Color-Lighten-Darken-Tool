@@ -3,6 +3,16 @@
 <head>
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>Color Lighten/Darken Tool</title>
 </head>
 
 <body>
@@ -10,12 +20,23 @@
         <h1 class="title">Color Lighten/Darken</h1>
 
         <label for="hex">Color (Hex)</label>
-        <input type="text" name="hex" id="hexInput" placeholder="#000000" />
+        <input type="text" name="hex" id="hexInput" placeholder="#000000" value="#97C4B8" />
+
+        <div class="toggle">
+            <p id="lightenText" class="toggle-text">Lighten</p>
+            <div id="toggleBtn" class="toggle-btn">
+                <div class="inner-circle"></div>
+            </div>
+            <p id="darkenText" class="toggle-text unselected">Darken</p>
+        </div>
+
         <label for="slider" id="sliderText">0%</label>
         <input type="range" min="0" max="100" value="0" class="slider" id="slider" name="slider"></input>
+
         <p>Input Color</p>
         <div id="inputColor" class="box"></div>
-        <p>Altered Color</p>
+
+        <p id="alteredColorText">Altered Color</p>
         <div id="alteredColor" class="box"></div>
     </div>
 

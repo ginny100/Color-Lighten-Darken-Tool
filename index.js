@@ -1,10 +1,18 @@
 // Get a reference to hexInput and inputColor DOM elements
 const hexInput = document.getElementById('hexInput')
 const inputColor = document.getElementById('inputColor')
+const alteredColor = document.getElementById('alteredColor')
+const alteredColorText = document.getElementById('alteredColorText')
 
 // Get a reference to the slider and sliderText DOM elements
 const slider = document.getElementById('slider')
 const sliderText = document.getElementById('sliderText')
+
+
+// Get a reference to lightenText, darkenText, and toggleBtn
+const lightenText = document.getElementById('lightenText')
+const darkenText = document.getElementById('darkenText');
+const toggleBtn = document.getElementById('toggleBtn');
 
 // Create a keyup event handler for hexInput
 hexInput.addEventListener('keyup', () => {
@@ -15,12 +23,45 @@ hexInput.addEventListener('keyup', () => {
 
     // If hex color is valid, update the background color of inputColor
     inputColor.style.backgroundColor = hex;
+
+    // Reset everything
+    reset()
+})
+
+// Create an event listener for the toggle btn
+toggleBtn.addEventListener('click', () => {
+    // Toggle between lighten and darken text
+    if (toggleBtn.classList.contains('toggled')) {
+        toggleBtn.classList.remove('toggled')
+        lightenText.classList.remove('unselected')
+        darkenText.classList.add('unselected')
+    } else {
+        toggleBtn.classList.add('toggled')
+        lightenText.classList.add('unselected')
+        darkenText.classList.remove('unselected')
+    }
+
+    // Reset everything each time we toggle
+    reset()
 })
 
 // Create an input event listener for slider element
 slider.addEventListener('input', () => {
+    // Check if hex is valid
+    if (!isValidHex(hexInput.value)) return
+
     // Display the value of the slider 
     sliderText.textContent = `${slider.value}%`
+
+    // Calculate the appropriate for the color lteration between positive and negative
+    const valueAddition = toggleBtn.classList.contains('toggled') ? -slider.value : slider.value
+
+    // Get the altered hex value
+    const alteredHex = alterColor(hexInput.value, valueAddition)
+
+    // Update the altered color
+    alteredColor.style.backgroundColor = alteredHex;
+    alteredColorText.innerText = `Altered Color ${alteredHex}`
 })
 
 // Check to see if the input from the user is a valid hex color
@@ -116,11 +157,33 @@ const alterColor = (hex, percentage) => {
     const amount = Math.floor((percentage / 100) * 255)
 
     // Get the new version of {r, g, b}
-    const newR = r + amount
-    const newG = g + amount
-    const newB = b + amount
-    console.log(newR, newG, newB)
+    const newR = increaseWithin0To255(r, amount)
+    const newG = increaseWithin0To255(g, amount)
+    const newB = increaseWithin0To255(b, amount)
+    // console.log({newR, newG, newB})
     return convertRGBToHex(newR, newG, newB)
 }
 
-console.log(alterColor('fff', 10));
+// Ensure Hex value stays between 0 and 255
+const increaseWithin0To255 = (hex, amount) => {
+    // const newHex = hex + amount
+    // if (newHex > 255) return 255
+    // if (newHex < 0) return 0
+    // return newHex
+
+    return Math.min(255, Math.max(0, hex + amount))
+}
+
+// Reset everything each time we toggle the button
+const reset = () => {
+    // Set slider value to 0 and slider text to 0%
+    slider.value = 0
+    sliderText.innerText = `0%`
+    // Set altered color to original input color
+    alteredColor.style.backgroundColor = hexInput.value
+    // Reset alteredColorText to original input
+    alteredColorText.innerText = `Altered Color ${hexInput.value}`
+    // call reset in toggleBtn click handler 
+    // call reset in hexInput keyup handler 
+}
+

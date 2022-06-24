@@ -41,3 +41,39 @@ input[type="text"] {
     background-color: #97C4B8;
     margin-bottom: 25px;
 }
+
+.toggle {
+    display: flex; /* lay things out horizontally */
+    align-items: center; /* align things horizontally */
+    margin-bottom: 20px;
+}
+
+.toggle-text {
+    font-size: 18px;
+}
+
+.toggle-btn {
+    height: 30px;
+    width: 60px;
+    background-color: gray;
+    border-radius: 30px;
+    padding: 5px;
+    margin: 0 10px;
+}
+
+.inner-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    transition: all 250ms;
+}
+
+.toggle-btn.toggled > .inner-circle {
+    transform: translateX(30px); /* move the inner circle 30px horizontally */
+    background-color: #333;
+}
+
+.unselected {
+    opacity: 0.25;
+}
