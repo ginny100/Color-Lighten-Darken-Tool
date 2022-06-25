@@ -1,5 +1,6 @@
 // Get a reference to hexInput and inputColor DOM elements
 const hexInput = document.getElementById('hexInput')
+const errorMessage = document.getElementById('errorMessage')
 const inputColor = document.getElementById('inputColor')
 const alteredColor = document.getElementById('alteredColor')
 const alteredColorText = document.getElementById('alteredColorText')
@@ -8,7 +9,6 @@ const alteredColorText = document.getElementById('alteredColorText')
 const slider = document.getElementById('slider')
 const sliderText = document.getElementById('sliderText')
 
-
 // Get a reference to lightenText, darkenText, and toggleBtn
 const lightenText = document.getElementById('lightenText')
 const darkenText = document.getElementById('darkenText');
@@ -16,6 +16,12 @@ const toggleBtn = document.getElementById('toggleBtn');
 
 // Create a keyup event handler for hexInput
 hexInput.addEventListener('keyup', () => {
+    // Hide error message if needed
+    if (errorMessage.classList.contains('show-error-message')) {
+        errorMessage.classList.remove('show-error-message')
+        errorMessage.classList.add('hide-error-message')
+    }
+
     const hex = hexInput.value
 
     // Check if hex color is valid
@@ -24,12 +30,20 @@ hexInput.addEventListener('keyup', () => {
     // If hex color is valid, update the background color of inputColor
     inputColor.style.backgroundColor = hex;
 
-    // Reset everything
+    // Call reset in hexInput keyup handler 
     reset()
 })
 
 // Create an event listener for the toggle btn
 toggleBtn.addEventListener('click', () => {
+    // Display error if the input is invalid
+    if (!isValidHex(hexInput.value)) {
+        if (errorMessage.classList.contains('hide-error-message')) {
+            errorMessage.classList.remove('hide-error-message')
+            errorMessage.classList.add('show-error-message')
+        }
+    }
+
     // Toggle between lighten and darken text
     if (toggleBtn.classList.contains('toggled')) {
         toggleBtn.classList.remove('toggled')
@@ -41,18 +55,26 @@ toggleBtn.addEventListener('click', () => {
         darkenText.classList.remove('unselected')
     }
 
-    // Reset everything each time we toggle
+    // Call reset in toggleBtn click handler 
     reset()
 })
 
 // Create an input event listener for slider element
 slider.addEventListener('input', () => {
-    // Check if hex is valid
-    // if (!isValidHex(hexInput.value)) return
-
-    /* Try adding alert */
+    // Display error and disable the slider if the input is invalid
     if (!isValidHex(hexInput.value)) {
-        alert('Please entern a valid Hex string')
+        // alert('Please entern a valid Hex string')
+        if (errorMessage.classList.contains('hide-error-message')) {
+            errorMessage.classList.remove('hide-error-message')
+            errorMessage.classList.add('show-error-message')
+        }
+        slider.disabled = true
+        reset()
+    } else {
+        if (errorMessage.classList.contains('show-error-message')) {
+            errorMessage.classList.remove('show-error-message')
+            errorMessage.classList.add('hide-error-message')
+        }
     }
 
     // Display the value of the slider 
@@ -76,7 +98,7 @@ slider.addEventListener('input', () => {
  */
 const isValidHex = (hex) => {
     // Input string is empty
-    if (!hex) return false
+    if (!hex || hex[0] != '#') return false
 
     // Strip out the starting '#'
     /* If the input does not start with '#', 
@@ -183,12 +205,11 @@ const increaseWithin0To255 = (hex, amount) => {
 const reset = () => {
     // Set slider value to 0 and slider text to 0%
     slider.value = 0
+    // Enable the slider again
+    slider.disabled = false
     sliderText.innerText = `0%`
     // Set altered color to original input color
     alteredColor.style.backgroundColor = hexInput.value
     // Reset alteredColorText to original input
     alteredColorText.innerText = `Altered Color ${hexInput.value}`
-    // call reset in toggleBtn click handler 
-    // call reset in hexInput keyup handler 
 }
-

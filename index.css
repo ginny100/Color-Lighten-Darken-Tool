@@ -8,7 +8,7 @@ body {
     background-color: #5F7161;
     color: #3F4E4F;
     position: relative;
-    background-image: url("background.jpeg");
+    background-image: url("images/background.jpeg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -25,6 +25,10 @@ body::before {
     bottom: 0px;
     left: 0px;
     background-color: rgba(218, 234, 241, 0.3);
+}
+
+p {
+    margin-bottom: 5px;
 }
 
 .container {
@@ -55,8 +59,30 @@ input {
 
 input[type="text"] {
     padding: 5px 10px;
-    border-radius: 3px;
-    border: none;
+    border-radius: 15px;
+    margin-bottom: 0px;
+    height: 50px;
+    width: 25%;
+    font-size: 40px;
+    text-align: center;
+    border-width: 3px;
+    border-color: #748DA6;
+}
+
+#errorMessage {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: red;
+    margin-bottom: 15px;
+}
+
+.show-error-message {
+    opacity: 1;
+}
+
+.hide-error-message {
+    opacity: 0;
 }
 
 .box {
@@ -69,7 +95,7 @@ input[type="text"] {
 .toggle {
     display: flex; /* lay things out horizontally */
     align-items: center; /* align things horizontally */
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .toggle-text {
@@ -100,4 +126,8 @@ input[type="text"] {
 
 .unselected {
     opacity: 0.25;
+}
+
+.slider {
+    margin-bottom: 15px;
 }
