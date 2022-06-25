@@ -48,7 +48,12 @@ toggleBtn.addEventListener('click', () => {
 // Create an input event listener for slider element
 slider.addEventListener('input', () => {
     // Check if hex is valid
-    if (!isValidHex(hexInput.value)) return
+    // if (!isValidHex(hexInput.value)) return
+
+    /* Try adding alert */
+    if (!isValidHex(hexInput.value)) {
+        alert('Please entern a valid Hex string')
+    }
 
     // Display the value of the slider 
     sliderText.textContent = `${slider.value}%`
