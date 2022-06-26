@@ -22,7 +22,7 @@ hexInput.addEventListener('keyup', () => {
         errorMessage.classList.add('hide-error-message')
     }
 
-    const hex = hexInput.value
+    const hex = hexInput.value.trim();
 
     // Check if hex color is valid
     if (!isValidHex(hex)) return
@@ -37,11 +37,12 @@ hexInput.addEventListener('keyup', () => {
 // Create an event listener for the toggle btn
 toggleBtn.addEventListener('click', () => {
     // Display error if the input is invalid
-    if (!isValidHex(hexInput.value)) {
+    if (!isValidHex(hexInput.value.trim())) {
         if (errorMessage.classList.contains('hide-error-message')) {
             errorMessage.classList.remove('hide-error-message')
             errorMessage.classList.add('show-error-message')
         }
+        return
     }
 
     // Toggle between lighten and darken text
@@ -62,33 +63,35 @@ toggleBtn.addEventListener('click', () => {
 // Create an input event listener for slider element
 slider.addEventListener('input', () => {
     // Display error and disable the slider if the input is invalid
-    if (!isValidHex(hexInput.value)) {
+    const hexInputValue = hexInput.value.trim();
+
+    if (!isValidHex(hexInputValue)) {
         // alert('Please entern a valid Hex string')
         if (errorMessage.classList.contains('hide-error-message')) {
             errorMessage.classList.remove('hide-error-message')
             errorMessage.classList.add('show-error-message')
         }
         slider.disabled = true
-        reset()
+        reset(false)
     } else {
         if (errorMessage.classList.contains('show-error-message')) {
             errorMessage.classList.remove('show-error-message')
             errorMessage.classList.add('hide-error-message')
         }
+
+        // Display the value of the slider 
+        sliderText.textContent = `${slider.value}%`
+
+        // Calculate the appropriate for the color lteration between positive and negative
+        const valueAddition = toggleBtn.classList.contains('toggled') ? -slider.value : slider.value
+
+        // Get the altered hex value
+        const alteredHex = alterColor(hexInputValue, valueAddition)
+
+        // Update the altered color
+        alteredColor.style.backgroundColor = alteredHex;
+        alteredColorText.innerText = `Altered Color ${alteredHex}`
     }
-
-    // Display the value of the slider 
-    sliderText.textContent = `${slider.value}%`
-
-    // Calculate the appropriate for the color lteration between positive and negative
-    const valueAddition = toggleBtn.classList.contains('toggled') ? -slider.value : slider.value
-
-    // Get the altered hex value
-    const alteredHex = alterColor(hexInput.value, valueAddition)
-
-    // Update the altered color
-    alteredColor.style.backgroundColor = alteredHex;
-    alteredColorText.innerText = `Altered Color ${alteredHex}`
 })
 
 // Check to see if the input from the user is a valid hex color
@@ -202,14 +205,14 @@ const increaseWithin0To255 = (hex, amount) => {
 }
 
 // Reset everything each time we toggle the button
-const reset = () => {
+const reset = (validInput = true) => {
     // Set slider value to 0 and slider text to 0%
     slider.value = 0
     // Enable the slider again
     slider.disabled = false
     sliderText.innerText = `0%`
     // Set altered color to original input color
-    alteredColor.style.backgroundColor = hexInput.value
+    alteredColor.style.backgroundColor = hexInput.value.trim()
     // Reset alteredColorText to original input
-    alteredColorText.innerText = `Altered Color ${hexInput.value}`
+    if(validInput) alteredColorText.innerText = `Altered Color ${hexInput.value.trim()}`
 }
